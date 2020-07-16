@@ -5,8 +5,8 @@ module.exports = async (ctx, cb) => {
   async function getLeaderboardRows() {
 
     const config = {
-      baseURL: 'https://community.auth0.com',
-      url: '/admin/plugins/explorer/queries/133/run',
+      baseURL: '{DOMAIN}',
+      url: '/admin/plugins/explorer/queries/{QUERY_ID}/run',
       method: 'POST',
       headers: {
         'Accept': '*/*',
@@ -30,7 +30,7 @@ module.exports = async (ctx, cb) => {
   const leaderboard = leaderboardTopThree.map( row => ({ name: row[1], email: row[2], score: row[6] }))
 
   const response = `
-  🏆 DSE Community Leaderboard
+  🏆 Your Community Leaderboard
 
   🥇 ${leaderboard[0].name} (${leaderboard[0].email}) - ${leaderboard[0].score} pts
 
