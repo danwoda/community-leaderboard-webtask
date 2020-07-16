@@ -22,6 +22,7 @@ module.exports = async (ctx, cb) => {
     }
     catch (error) {
       console.error(error)
+      cb(null, { text: `¯\\_(ツ)_/¯  Oops...there was an error.` })
     }
   }
 
@@ -41,3 +42,4 @@ module.exports = async (ctx, cb) => {
 
   cb(null, { text: response })
 }
+
