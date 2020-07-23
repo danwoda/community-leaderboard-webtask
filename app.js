@@ -1,8 +1,17 @@
 module.exports = async (ctx, cb) => {
 
   const axios = require('axios')
+  const FormData = require('form-data')
+  const moment = require('moment')
 
   async function getLeaderboardRows() {
+
+    const start = moment().startOf('month').format('MM/DD/YYYY')
+    const end = moment().add(1, 'month').startOf('month').format('MM/DD/YYYY')
+    const params = JSON.stringify({ date_start: start, date_end: end })
+    
+    const form = new FormData()
+    form.append('params', params)
 
     const config = {
       baseURL: '{DOMAIN}',
@@ -12,8 +21,10 @@ module.exports = async (ctx, cb) => {
         'Accept': '*/*',
         'Content-Type': 'multipart/form-data',
         'Api-Key': ctx.secrets.apiKey,
-        'Api-Username': ctx.secrets.apiUsername
-      }
+        'Api-Username': ctx.secrets.apiUsername,
+        ...form.getHeaders()
+      },
+      data: form
     }
 
     try {
@@ -22,7 +33,7 @@ module.exports = async (ctx, cb) => {
     }
     catch (error) {
       console.error(error)
-      cb(null, { text: `¯\\_(ツ)_/¯  Oops...there was an error. Please contact the Community Team for more info.` })
+      cb(null, { text: `¯\\_(ツ)_/¯  Oops...there was an error. Please contact #community for more info.` })
     }
   }
 
@@ -51,4 +62,3 @@ module.exports = async (ctx, cb) => {
 
   cb(null, { text: response, response_type: 'in_channel' })
 }
-
