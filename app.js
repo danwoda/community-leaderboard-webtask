@@ -33,7 +33,7 @@ module.exports = async (ctx, cb) => {
     }
     catch (error) {
       console.error(error)
-      cb(null, { text: `¯\\_(ツ)_/¯  Oops...there was an error. Please contact #community for more info.` })
+      cb(null, { text: `¯\\_(ツ)_/¯  Oops...there was an error. Please contact <#C3CQQB475> for more info.` })
     }
   }
 
@@ -42,15 +42,16 @@ module.exports = async (ctx, cb) => {
   if(ctx.body.text) {
     const email = ctx.body.text
     const matchingRow = leaderboardRows.find(i => i[2] === email)
-    const response = matchingRow ? `🏆 DSE Community Leaderboard\n\n ${matchingRow[1]} (${matchingRow[2]}) currently has ${matchingRow[6]} pts` : `We couldn't find an email address matching \`${email}\`.`
+    const response = matchingRow ? `🏆 DSE Community Leaderboard\n\n ${matchingRow[1]} (${matchingRow[2]}) currently has ${matchingRow[6]} pts\nFor the leaderboard, try \`/wt dse-community-leaderboard\`` : `We couldn't find an email address matching \`${email}\`.`
     cb(null, { text: response })
   }
 
   const leaderboardTopThree = leaderboardRows.slice(0, 3)
   const leaderboard = leaderboardTopThree.map( row => ({ name: row[1], email: row[2], score: row[6] }))
+  const period = moment().format('MMMM YYYY')
 
   const response = `
-  🏆 DSE Community Leaderboard
+  🏆 DSE Community Leaderboard - ${period}
 
   🥇 ${leaderboard[0].name} (${leaderboard[0].email}) - ${leaderboard[0].score} pts
 
@@ -58,7 +59,11 @@ module.exports = async (ctx, cb) => {
 
   🥉 ${leaderboard[2].name} (${leaderboard[2].email}) - ${leaderboard[2].score} pts
 
-  To see the score for a specific email, use \`/wt dse-community-leaderboard {email}\``
+  To see the score for a specific email, try \`/wt dse-community-leaderboard {email}\`
+  
+  If you have questions about getting involved in Community, check out <{LINK}|this confluence page>.
+  For issues, questions, or feedback about this /wt, please visit <https://github.com/danwoda/community-leaderboard-webtask|the repo>.`
+  
 
   cb(null, { text: response, response_type: 'in_channel' })
 }
